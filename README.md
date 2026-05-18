@@ -11,11 +11,12 @@
 5. [Exploratory Data Analysis (EDA)](#5-exploratory-data-analysis-eda)
 6. [Statistical Hypothesis Testing](#6-statistical-hypothesis-testing)
 7. [Results & Key Findings](#7-results--key-findings)
-8. [Limitations](#8-limitations)
-9. [Conclusion & Future Work](#9-conclusion--future-work)
-10. [How to Run](#10-how-to-run)
-11. [AI Usage](#11-ai-usage)
-12. [How Others Can Reproduce This Project](#12-how-others-can-reproduce-this-project)
+8. [Machine Learning](#8-machine-learning)
+9. [Limitations](#9-limitations)
+10. [Conclusion & Future Work](#10-conclusion--future-work)
+11. [How to Run](#11-how-to-run)
+12. [AI Usage](#12-ai-usage)
+13. [How Others Can Reproduce This Project](#13-how-others-can-reproduce-this-project)
 
 ---
 
@@ -186,7 +187,50 @@ After running all three tests across both datasets, the following patterns emerg
 
 ---
 
-## 8. Limitations
+## 8. Machine Learning
+
+Beyond statistical testing, machine learning models were built to predict whether a given day would be an **active day** (`is_active`: step count ≥ 8,000) based on Netflix watch behavior and activity history. The full analysis is in `ml.ipynb`.
+
+### 8.1 Problem Definition
+
+| | |
+|---|---|
+| **Task** | Binary classification + unsupervised clustering |
+| **Target** | `is_active` — 1 if step count ≥ 8,000, 0 otherwise |
+| **Features** | `watch_minutes`, lag features (yesterday's steps), 7-day rolling average, and activity proxies |
+| **Dataset size** | 859 rows |
+
+### 8.2 Models & Results
+
+| Task | Model | Test Performance |
+|------|-------|-----------------|
+| Classification (`is_active`) | Decision Tree (depth=3) | ~72% accuracy |
+| Classification (`is_active`) | Random Forest (n=100) | ~78% accuracy |
+| Unsupervised | K-Means (k=3) | 3 clusters — one is the "couch day" pattern |
+
+### 8.3 Feature Importance
+
+The most predictive features were **biometric activity proxies** and **recent activity history** (lag/rolling-average features). Netflix features (watch minutes, watch category) did matter, but ranked lower than personal activity momentum — meaning yesterday's behavior is a stronger predictor of today's steps than last night's Netflix.
+
+### 8.4 Unsupervised Learning — K-Means Clustering
+
+K-Means (k=3) independently surfaced a **high Netflix + low step** cluster without using any labels, supporting the hypothesis from EDA and statistical testing through a completely separate method.
+
+### 8.5 Personal Prediction
+
+Both models predict a noticeably lower probability of being Active on a Heavy Netflix day compared to a No Netflix day. The Random Forest in particular shows a **~30 percentage point gap** in predicted activity probability between typical Heavy and No Netflix days.
+
+### 8.6 Key Takeaways
+
+1. Activity (≥ 8,000 steps) is predictable with ~78% accuracy using a small, simple model.
+2. The most predictive features are activity proxies and recent activity history — Netflix features contribute but are not dominant on their own.
+3. K-Means independently surfaces a *high Netflix + low step* cluster, supporting the EDA hypothesis without using the label.
+4. The personal prediction shows a meaningful gap (~30 pp in RF probability) between a typical Heavy Netflix day and a typical No Netflix day.
+
+---
+
+## 9. Limitations
+
 
 - **Confounding variables:** Step count is influenced by many factors beyond Netflix — work schedule, weather, social activities, illness, and travel. These were not controlled for.
 - **Self-reported / automated data:** Apple Health step counts are estimated from phone movement; users who leave their phone at home or use it inconsistently may see data gaps.
@@ -196,7 +240,7 @@ After running all three tests across both datasets, the following patterns emerg
 
 ---
 
-## 9. Conclusion & Future Work
+## 10. Conclusion & Future Work
 
 This project applied a full data science pipeline — data collection, preprocessing, EDA, and formal statistical testing — to a personal behavioral question about screen time and physical activity.
 
@@ -211,7 +255,7 @@ The methodology was appropriate for the data structure: because step counts are 
 
 ---
 
-## 10. How to Run
+## 11. How to Run
 
 ### Prerequisites
 ```bash
@@ -244,13 +288,13 @@ This will print normality check results, then all three hypothesis test outcomes
 
 ---
 
-## 11. AI Usage
+## 12. AI Usage
 
 Claude (Anthropic) was used in this project for structuring the final report and improving code readability. All data collection, analysis decisions, hypothesis formulation, and interpretation of results are the author's own work.
 
 ---
 
-## 12. How Others Can Reproduce This Project
+## 13. How Others Can Reproduce This Project
 
 This section is for anyone who wants to replicate this analysis using their **own** Netflix and step count data.
 
@@ -263,7 +307,7 @@ This section is for anyone who wants to replicate this analysis using their **ow
 3. Scroll to the bottom and click **"Download all"**
 4. You will receive a `NetflixViewingHistory.csv` file with columns: `Title`, `Date`
 
-> ⚠️ Netflix only gives you the date and title — not the exact duration. You'll need to either manually look up episode lengths or estimate watch minutes using average episode runtimes per title.
+>  Netflix only gives you the date and title — not the exact duration. You'll need to either manually look up episode lengths or estimate watch minutes using average episode runtimes per title.
 
 ---
 
