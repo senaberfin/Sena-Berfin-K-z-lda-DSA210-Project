@@ -14,7 +14,8 @@
 8. [Limitations](#8-limitations)
 9. [Conclusion & Future Work](#9-conclusion--future-work)
 10. [How to Run](#10-how-to-run)
-11. [How Others Can Reproduce This Project](#11-how-others-can-reproduce-this-project)
+11. [AI Usage](#11-ai-usage)
+12. [How Others Can Reproduce This Project](#12-how-others-can-reproduce-this-project)
 
 ---
 
@@ -243,7 +244,13 @@ This will print normality check results, then all three hypothesis test outcomes
 
 ---
 
-## 11. How Others Can Reproduce This Project
+## 11. AI Usage
+
+Claude (Anthropic) was used in this project for structuring the final report and improving code readability. All data collection, analysis decisions, hypothesis formulation, and interpretation of results are the author's own work.
+
+---
+
+## 12. How Others Can Reproduce This Project
 
 This section is for anyone who wants to replicate this analysis using their **own** Netflix and step count data.
 
